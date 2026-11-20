@@ -1,0 +1,17 @@
+name: how-to-train-your-fly
+channels: [conda-forge]
+dependencies:
+  - python=3.11
+  - tk          # GUI
+  - pip
+  - pip:
+      - mujoco==3.16.0
+      - numpy==2.4.6
+      - pandas==3.0.6
+      - scipy==1.17.1
+      - pyarrow==25.0.1
+      - h5py==3.16.0
+      - matplotlib==3.11.2
+      - pillow==12.3.0
+      - cma==4.6.0
+      - torch==2.14.1          # imitation stage (CUDA optional)

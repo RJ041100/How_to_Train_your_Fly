@@ -1,0 +1,15 @@
+# data (download per data/README.md)
+data/malecns/
+data/processed/
+data/flybody/
+third_party/
+# generated outputs; trained policies and their logs are kept
+walk/runs/
+walk/runs_real/**/teacher_data.npz
+walk/runs_real/*.out
+walk/runs_real/gui.log
+walk/runs_real/gui.pid
+__pycache__/
+*.pyc
+MUJOCO_LOG.TXT
+.ipynb_checkpoints/
