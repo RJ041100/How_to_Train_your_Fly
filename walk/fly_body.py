@@ -13,10 +13,11 @@ import os
 import mujoco
 import numpy as np
 
-from paths import FLYBODY_ASSETS
+from paths import flybody_file
 
-FLY_XML = FLYBODY_ASSETS / "fruitfly.xml"           # walk_torque.FLY_XML
-FLOOR_XML = FLYBODY_ASSETS / "floor.xml"            # fly_mujoco_proc.FLY_XML
+# flybody model files (walk_torque.FLY_XML, fly_mujoco_proc.FLY_XML); looked up when first used, so
+# modules that only need the constants below (e.g. walk_circuit_build.py) work without flybody
+FLY_XML_NAME, FLOOR_XML_NAME = "fruitfly.xml", "floor.xml"
 
 # ---- connectome motor neurons -> joints (fly_motor.py)
 JOINTS = ["coxa", "femur", "tibia", "tarsus"]
@@ -60,7 +61,7 @@ FLIES = [("F_", 0.0, "fly", "torque", [0.95, 0.30, 0.20, 1])]
 
 def build_model():
     """The single free fly of floor.xml (walk_mujoco_proc.build_model)."""
-    model = mujoco.MjModel.from_xml_path(str(FLOOR_XML))
+    model = mujoco.MjModel.from_xml_path(str(flybody_file(FLOOR_XML_NAME)))
     return model, mujoco.MjData(model)
 
 
@@ -96,8 +97,9 @@ def probe_signs(model, data, legs):
 
 
 def fly_spec():
-    s = mujoco.MjSpec.from_file(str(FLY_XML))
-    mdir = os.path.join(os.path.dirname(FLY_XML), s.meshdir)
+    fly_xml = flybody_file(FLY_XML_NAME)
+    s = mujoco.MjSpec.from_file(str(fly_xml))
+    mdir = os.path.join(os.path.dirname(fly_xml), s.meshdir)
     for mesh in s.meshes:
         mesh.file = os.path.normpath(os.path.join(mdir, mesh.file))
     s.meshdir = ""
@@ -111,7 +113,7 @@ def build(torque_scale, flies=None):
     """Floor + flies (prefix, lane y, label, kind, colour). Every non-'servo' fly gets option-5 torque
     motors on its 24 leg joints: Tmax = kp * GAIN * max|ctrlrange| * torque_scale."""
     flies = FLIES if flies is None else flies
-    src = mujoco.MjSpec.from_file(str(FLY_XML))
+    src = mujoco.MjSpec.from_file(str(flybody_file(FLY_XML_NAME)))
     spec = mujoco.MjSpec()
     spec.modelname = "walk_torque"
     o, so = spec.option, src.option

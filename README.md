@@ -24,16 +24,18 @@ conda env create -f environment.yml
 conda activate how-to-train-your-fly
 ```
 
-The fly model comes from flybody's assets. Either install flybody
-(`pip install --no-deps git+https://github.com/TuragaLab/flybody.git`, only its `fruitfly/assets` are used) or
-clone it and point at the assets:
+The fly model comes from flybody's assets (only `flybody/fruitfly/assets` is used). Fetch them at the
+commit the results were produced with (`d015e9b`, fruitfly.xml sha256 `d14946fd…`, ~180 MB of meshes):
 
 ```bash
-git clone https://github.com/TuragaLab/flybody.git third_party/flybody      # or anywhere, then:
-export FLYBODY_ASSETS=$PWD/third_party/flybody/flybody/fruitfly/assets
+bash scripts/get_flybody.sh          # -> third_party/flybody, found automatically
 ```
 
-Results here were produced with flybody commit `d015e9b` (fruitfly.xml sha256 `d14946fd…`).
+Already have flybody? Skip the script and either set
+`export FLYBODY_ASSETS=/path/to/flybody/flybody/fruitfly/assets` or have the `flybody` package installed
+(`pip install --no-deps git+https://github.com/TuragaLab/flybody.git`). `walk/paths.py` uses the first of
+`$FLYBODY_ASSETS`, the installed package, `third_party/flybody` that contains `fruitfly.xml`, and otherwise
+stops with a message listing where it looked.
 
 ## Quick start (trained networks are included)
 
@@ -76,6 +78,8 @@ model refits to within 1e-14, and `eval` of `runs_real/cma_robust` reproduces th
 | Path | What |
 |---|---|
 | `walk/paths.py` | data locations (override with `MALECNS_DIR`, `FLY_DATA_DIR`, `FLYBODY_WALKING_DATA`, `FLYBODY_ASSETS`) |
+| `walk/make_figures.py` | report figures + `results_summary.csv` → `docs/figures/` (re-simulates; ~1 min on 22 cores) |
+| `scripts/get_flybody.sh` | fetches flybody's `fruitfly/assets` at the pinned commit into `third_party/` and checks the hash |
 | `walk/fly_body.py` | the option-5 body model, joint sign probe, shared constants |
 | `walk/prepare_connectome.py` | MaleCNS flat files → neuron and connectivity tables |
 | `walk/walk_circuit_build.py` | the 2,655-neuron walking circuit → `walk/walk_circuit/` |

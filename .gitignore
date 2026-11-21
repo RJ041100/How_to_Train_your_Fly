@@ -9,6 +9,7 @@ walk/runs_real/**/teacher_data.npz
 walk/runs_real/*.out
 walk/runs_real/gui.log
 walk/runs_real/gui.pid
+walk/runs_real/figdata/
 __pycache__/
 *.pyc
 MUJOCO_LOG.TXT

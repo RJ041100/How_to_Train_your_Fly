@@ -1,0 +1,6 @@
+controller,targets reached,episodes,falls,"time to target (s, median)",joint error (rad),tilt (deg),speed (cm/s)
+Teacher (no network),36,36,0,1.524,0.068,5.155,1.148
+Imitation,12,36,14,4.411,0.604,14.408,0.108
+CMA-ES round 1,36,36,0,2.941,0.404,7.747,0.701
+CMA-ES round 2,34,36,2,2.731,0.341,12.057,0.639
+Command fine-tune,21,36,0,3.676,0.365,9.425,0.261
